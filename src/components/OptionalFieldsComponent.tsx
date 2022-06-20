@@ -1,12 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 // import { Datepicker } from "./generic/Datepicker";
 import { InputField } from "./generic/InputField";
 
-export const OptionalFieldsComponent: React.FC<{ selectedFilter: string }> = ({
+export const OptionalFieldsComponent: React.FC<{ selectedFilter: string, handleOptionalFieldsValueChange?: (a:string, b:string) => void }> = ({
   selectedFilter,
+  handleOptionalFieldsValueChange
 }) => {
 
     const [calenderState, setCalenderState] = useState<boolean>(false);
+
+    const yearRef = useRef(null);
+    const sequenceNumberRef = useRef(null);
+
+    function _handleFieldChange() {
+        const year = yearRef.current?.value;
+        const sequenceNumber = sequenceNumberRef.current?.value;
+        
+        handleOptionalFieldsValueChange(sequenceNumber, year);
+    }
 
     function _getYearField() {
         const currentYear = new Date().getFullYear();
@@ -17,7 +28,7 @@ export const OptionalFieldsComponent: React.FC<{ selectedFilter: string }> = ({
         return (
             <div className="flex flex-col">
                 <label htmlFor="year" className="text-base mb-1">Year</label>
-                <select id="year" className="px-2 py-2 text-base rounded border border-black focus:border-green-500 shadow outline-none">
+                <select onChange={() => _handleFieldChange()} ref={yearRef} id="year" className="px-2 py-2 text-base rounded border border-black focus:border-green-500 shadow outline-none">
                     {yearArray.map((year) => {
                         return <option value={year}>{year}</option>
                     })}
@@ -30,7 +41,7 @@ export const OptionalFieldsComponent: React.FC<{ selectedFilter: string }> = ({
         <div className="w-1/3">
             <div className="flex flex-col mb-4">
                 <label htmlFor="seqnumber" className="text-base mb-1">Sequence Number</label>
-                <InputField inputType="text" halfWidth/>
+                <InputField handleValueChange={_handleFieldChange} sendRef={sequenceNumberRef} inputType="text" halfWidth/>
             </div>
             {_getYearField()}
         </div>
@@ -76,7 +87,7 @@ export const OptionalFieldsComponent: React.FC<{ selectedFilter: string }> = ({
 
   function _renderOptionalFields() {
     let fields;
-    console.log(selectedFilter);
+    
     switch (selectedFilter) {
       case "SEQUENCE_NUMBER":
         fields = _getSequenceNumberFields();

@@ -6,7 +6,7 @@ export default function PrivateRoute() {
     
     const user = GetLoggedinUser();
 
-    console.log('user', user)
+    
     
     // If selectedData, return an outlet that will render child elements
     // If not, return element that will navigate to login page

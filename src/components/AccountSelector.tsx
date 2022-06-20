@@ -25,7 +25,7 @@ const AccountSelector: React.FC<Props> = (props) => {
   }, []);
 
   const arr = [1,2,3,4,5,6,7,8,9,10]
-
+  
   return (
     <>
       <div className="max-w-sm">
@@ -39,13 +39,13 @@ const AccountSelector: React.FC<Props> = (props) => {
             </div>
             <div className="col-span-9">
               <div className="text-xl text-green-600">
-                BS: <span className="font-bold">{selectedAccount.accountHolder}</span>
+                BS: <span className="font-bold">{selectedAccount?.accountHolder}</span>
               </div>
               <div className="text-lg text-gray-500">
-                {selectedAccount.accountNumber}
+                {selectedAccount?.accountNumber}
               </div>
               <div className="text-gray-500">
-                {selectedAccount.accountBalance ?? 
+                {selectedAccount?.accountBalance ?? 
                     <span className="flex">
                         {
                             arr.map(ar => <VscCircleFilled className="text-base text-gray-700"/>)

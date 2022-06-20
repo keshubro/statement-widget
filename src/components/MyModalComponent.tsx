@@ -57,6 +57,7 @@ const MyModalComponent: React.FC<Props> = (props) => {
 
         <ul onClick={e => _accountSelected(e)} id="list">
           {props.accounts?.map((account) => {
+              console.log(account)
             return (
               <li
                 key={account.id}

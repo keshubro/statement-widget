@@ -18,6 +18,7 @@ export interface InputFieldProps {
   handleCalenderClick?: () => void;
   placeholder?: string;
   sendRef?: React.LegacyRef<HTMLInputElement> 
+  handleValueChange?: () => void;
 }
 
 export interface ItemObject {
@@ -29,4 +30,5 @@ export interface ExpandableItemProps {
   title: string;
   details?: ItemObject[];
   displayDownloadButton?: boolean;
+  filename?: string
 }

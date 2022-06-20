@@ -25,11 +25,7 @@ const App: React.FC = () => {
             <SelectedFilterContext>
               <AuthContext>
                 <NavbarComponent />
-
                     <MyRouter />
-        
-            
-                
               </AuthContext>
             </SelectedFilterContext>
           </FilterContext>

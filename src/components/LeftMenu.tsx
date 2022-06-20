@@ -3,7 +3,7 @@ import { AiOutlineAlignCenter } from 'react-icons/ai';
 import { BsPerson } from 'react-icons/bs';
 import { MdOutlineProductionQuantityLimits } from 'react-icons/md';
 
-export const LeftMenu = () => {
+export const LeftMenu: React.FC = () => {
     const items = [
         {
             icon: <AiOutlineAlignCenter />,
