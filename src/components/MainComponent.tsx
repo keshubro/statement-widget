@@ -2,8 +2,11 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { accounts } from "../constants";
 import { GetJWT } from "../contexts/AuthContext";
+import { GetDocumentType } from "../contexts/DocumentTypeContext";
 import { GetSelectedFilter } from "../contexts/SelectedFilterContext";
+import { GetShowDocumentsListValue, SetShowDocumentsListValue } from "../contexts/ShowDocumentsListContext";
 import { AccountObject, DocumentObject, ExpandableItemProps, ItemObject } from "../interfaces/AccountObjectInterface";
+import { host } from "../utils/constants";
 import AccountSelector from "./AccountSelector";
 import CardComponent from "./CardComponent";
 import { DocumentListComponent } from "./DocumentListComponent";
@@ -12,19 +15,21 @@ import FilterComponent from "./FilterComponent";
 import { OptionalFieldsComponent } from "./OptionalFieldsComponent";
 
 export const MainComponent: React.FC = () => {
+
+    // Get context values
     const selectedFilter = GetSelectedFilter();
-
     const getJwt = GetJWT();
+    const selectedDocType = GetDocumentType();
+    const getShowDocumentsListValue = GetShowDocumentsListValue();
+    const setShowDocumentsListValue = SetShowDocumentsListValue();
 
-    console.log('token : ', getJwt);
-
-    const [showDocumentList, setShowDocumentList] = useState<boolean>(false);
     const [documentList, setDocumentList] = useState<ExpandableItemProps[]>([{ title: '' }]);
     const [accounts, setAccounts] = useState<AccountObject[]>([]);
     const [documentTypes, setDocumentTypes] = useState<DocumentObject[]>([{ documentTypeLabel: '', documentTypeNumber: '' }]);
     const [loaded, setLoaded] = useState<boolean>(false);
     const [sequenceNumber, setSequenceNumber] = useState<string>('');
     const [year, setYear] = useState<string>('');
+    const [quarter, setQuarter] = useState<string>('');
 
     const arr = [
         {
@@ -105,35 +110,58 @@ export const MainComponent: React.FC = () => {
             case 'DATE_RANGE':
                 options = `?filter=DATE_RANGE`;
                 break;
+            case 'QUARTER_NUMBER':
+                options = `?filter=QUARTER&quarter=${quarter}&year=${year}`
+                break;
             default:
-
         }
 
         return options;
     }
 
     function _handleDownloadClick() {
-        console.log('hi');
         const config = {
             headers: {
                 Authorization: `Bearer ${getJwt}`
             }
         }
-        console.log('selected filter is : ', selectedFilter)
-
+        setShowDocumentsListValue(false);
         const queryParams = _getQueryParams();
-        axios.get(`http://localhost:3000/investmentStatements${queryParams}`, config)
+        const docTypeEndpoint = _getDocTypeEndpoint();
+        axios.get(`${host}/${docTypeEndpoint}${queryParams}`, config)
             .then((res) => res.data)
             .then((res) => {
-                console.log(res)
-                setDocumentList(res)
+                setDocumentList(res);
+                setShowDocumentsListValue(true);
             })
-        setShowDocumentList(!showDocumentList);
+        
     }
 
-    function _handleOptionalFieldsValueChange(sequenceNumber:string, year:string) {
-        setSequenceNumber(sequenceNumber);
-        setYear(year);
+    function _getDocTypeEndpoint() {
+        switch(selectedDocType) {
+            case 'INVSTMT':
+                return 'investmentStatements';
+            case 'QRTSTMT':
+                return 'quarterlyStatements'
+            case 'INCRPT':
+                return 'incidentReports'
+            default:
+                return '';
+        }
+    }
+
+    function _handleOptionalFieldsValueChange(paramsObj) {
+        const { year, sequenceNumber, quarterNumber } = paramsObj;
+        if(sequenceNumber) {
+            setSequenceNumber(sequenceNumber);
+        }
+        if(year) {
+            setYear(year);
+        }
+        if(quarterNumber) {
+            setQuarter(quarterNumber);
+        }
+        
     }
 
     return (
@@ -166,7 +194,7 @@ export const MainComponent: React.FC = () => {
                                         Search Documents
                                     </button>
                                 </div>
-                                {showDocumentList && <div className="mt-4"><DocumentListComponent documentList={documentList} /></div>}
+                                {getShowDocumentsListValue && <div className="mt-4"><DocumentListComponent documentList={documentList} /></div>}
                             </div>
                         </CardComponent>
                     </div>

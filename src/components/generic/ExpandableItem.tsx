@@ -1,17 +1,36 @@
 import React, { useState } from "react";
 import { ExpandableItemProps, ItemObject } from "../../interfaces/AccountObjectInterface";
 import axios from 'axios';
+import { setUpBlobUrl } from "../../utils/setUpBlobUrl";
 
 export const ExpandableItem: React.FC<ExpandableItemProps> = (props) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
   function _downloadDocument() {
-      window.location.href = `http://localhost:8000/files/${props.filename}`;
-    //   axios.get('http://localhost:8000/files/6b0d299ca6f50dadeeaa360d7e4571bd.pdf')
-    //     .then((res) => res.data)
-    //     .then(res => {
-    //         console.log(res)
-    //     })
+    //   window.location.href = `http://localhost:8000/files/${props.filename}`;
+      axios.get('http://localhost:3000/documents/6b0d299ca6f50dadeeaa360d7e4571bd.pdf')
+        .then((res) => res.data)
+        .then(res => {
+            console.log(res);
+            _downloadContent(res);
+        })
+  }
+
+  function _downloadContent(response) {
+      const filename = 'abc.pdf';
+      const abc = {
+          data: response,
+          contentType: 'application/pdf'
+      }
+    const downloadUrl = setUpBlobUrl(abc);
+    const downloadLink = document.createElement('a');
+    document.body.appendChild(downloadLink);
+    downloadLink.style = 'display:none';
+    downloadLink.setAttribute('href', downloadUrl);
+    downloadLink.setAttribute('download', filename);
+    downloadLink.setAttribute('target', '_blank');
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
   }
 
   function _renderExpandedPart() {

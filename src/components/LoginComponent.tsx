@@ -45,41 +45,44 @@ export const LoginComponent: React.FC = () => {
     }
 
     function _handleFieldChange() {
-        debugger
+
     }
 
     return (
         <CardComponent>
+
             <div className="mx-4 my-4">
-                <div className="col-span-1">
-                    <a href="#">
-                        <span className="font-bold text-4xl text-green-600">Buck</span>
-                        <span className="text-2xl text-gray-500 font-bold">sort</span>
-                    </a>
-                </div>
-                <div className="font-bold text-lg mt-4">Login</div>
+                <form>
+                    <div className="col-span-1">
+                        <a href="#">
+                            <span className="font-bold text-4xl text-green-600">Buck</span>
+                            <span className="text-2xl text-gray-500 font-bold">sort</span>
+                        </a>
+                    </div>
+                    <div className="font-bold text-lg mt-4">Login</div>
 
 
-                <div className="mt-3">
-                    <InputField sendRef={emailRef} inputType="email" placeholder="Email" handleValueChange={() => { setIsError(false) }}  />
-                </div>
-                <div className="mt-3">
-                    <InputField sendRef={passwordRef} placeholder="Password" inputType="password" handleValueChange={() => { setIsError(false) }} />
-                </div>
+                    <div className="mt-3">
+                        <InputField sendRef={emailRef} inputType="email" placeholder="Email" handleValueChange={() => { setIsError(false) }} />
+                    </div>
+                    <div className="mt-3">
+                        <InputField sendRef={passwordRef} placeholder="Password" inputType="password" handleValueChange={() => { setIsError(false) }} />
+                    </div>
 
-                <div className="mt-4">
+                    <div className="mt-4">
 
-                    {isError && <div className="mt-5 mb-5 flex align-items-center p-1 w-1/2 border rounded border-red-500">
-                        <p className="text-base text-red-600 flex justify-center items-center font-bold"><BiError className="text-lg font-bold mr-3" />Incorrect email or password !</p>
-                    </div>}
+                        {isError && <div className="mt-5 mb-5 flex align-items-center p-1 w-1/2 border rounded border-red-500">
+                            <p className="text-base text-red-600 flex justify-center items-center font-bold"><BiError className="text-lg font-bold mr-3" />Incorrect email or password !</p>
+                        </div>}
 
-                    <button onClick={() => _handleLogin()} className="px-2 py-1 text-base rounded bg-green-400 text-gray-700 font-bold hover:text-gray-600 border border-green-600 focus:border-green-500 shadow outline-none">
-                        Login
-                    </button>
+                        <button type="submit" onClick={() => _handleLogin()} className="px-2 py-1 text-base rounded bg-green-400 text-gray-700 font-bold hover:text-gray-600 border border-green-600 focus:border-green-500 shadow outline-none">
+                            Login
+                        </button>
 
 
 
-                </div>
+                    </div>
+                </form>
 
                 <div className="mt-4 flex justify-center">
                     <span className="text-base font-bold">OR</span>

@@ -11,15 +11,25 @@ export const OptionalFieldsComponent: React.FC<{ selectedFilter: string, handleO
 
     const yearRef = useRef(null);
     const sequenceNumberRef = useRef(null);
+    const quarterRef = useRef(null);
+    const fromDateRef = useRef(null);
+    const toDateRef = useRef(null);
 
     function _handleFieldChange() {
-        const year = yearRef.current?.value;
-        const sequenceNumber = sequenceNumberRef.current?.value;
+        const year = yearRef.current?.value ?? undefined;
+        const sequenceNumber = sequenceNumberRef.current?.value ?? undefined;
+        const quarterNumber = quarterRef?.current?.value ?? undefined;
+
+        const paramsObj = {
+            year,
+            sequenceNumber,
+            quarterNumber
+        }
         
-        handleOptionalFieldsValueChange(sequenceNumber, year);
+        handleOptionalFieldsValueChange(paramsObj);
     }
 
-    function _getYearField() {
+    function _getYearField(customRef:any, showLabel:boolean = true) {
         const currentYear = new Date().getFullYear();
         const yearArray = [];
         for(let year = currentYear; year >= currentYear-10; year--) {
@@ -27,8 +37,8 @@ export const OptionalFieldsComponent: React.FC<{ selectedFilter: string, handleO
         }
         return (
             <div className="flex flex-col">
-                <label htmlFor="year" className="text-base mb-1">Year</label>
-                <select onChange={() => _handleFieldChange()} ref={yearRef} id="year" className="px-2 py-2 text-base rounded border border-black focus:border-green-500 shadow outline-none">
+                {showLabel && <label htmlFor="year" className="text-base mb-1">Year</label>}
+                <select onChange={() => _handleFieldChange()} ref={customRef ?? yearRef} id="year" className="px-2 py-2 text-base rounded border border-black focus:border-green-500 shadow outline-none">
                     {yearArray.map((year) => {
                         return <option value={year}>{year}</option>
                     })}
@@ -43,7 +53,7 @@ export const OptionalFieldsComponent: React.FC<{ selectedFilter: string, handleO
                 <label htmlFor="seqnumber" className="text-base mb-1">Sequence Number</label>
                 <InputField handleValueChange={_handleFieldChange} sendRef={sequenceNumberRef} inputType="text" halfWidth/>
             </div>
-            {_getYearField()}
+            {_getYearField(null)}
         </div>
     );
   }
@@ -54,13 +64,13 @@ export const OptionalFieldsComponent: React.FC<{ selectedFilter: string, handleO
         <div className="w-1/3">
             <div className="flex flex-col mb-4">
                 <label htmlFor="quarternumber" className="text-base mb-1">Quarter</label>
-                <select className="px-2 py-2 text-base rounded border border-black focus:border-green-500 shadow outline-none">
+                <select onChange={() => _handleFieldChange()} ref={quarterRef} className="px-2 py-2 text-base rounded border border-black focus:border-green-500 shadow outline-none">
                     {quarterArray.map((quarter) => {
                         return <option value={quarter}>{quarter}</option>
                     })}
                 </select>
             </div>
-            {_getYearField()}
+            {_getYearField(null)}
         </div>
     )
   }
@@ -68,13 +78,13 @@ export const OptionalFieldsComponent: React.FC<{ selectedFilter: string, handleO
   function _getDateRangeFields() {
     return (
         <div className="grid grid-cols-2 gap-4">
-            <div className="">
+            <div className="flex flex-col">
                 <label className="text-base">From</label>
-              
+                <div className="w-2/3">{_getYearField(fromDateRef, false)}</div>
             </div>
             <div className="flex flex-col">
                 <label className="text-base">To</label>
-                
+                <div className="w-2/3">{_getYearField(toDateRef, false)}</div>
             </div>
         </div>
         

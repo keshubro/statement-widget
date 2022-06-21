@@ -14,25 +14,28 @@ import { SignupComponent } from "./components/SignupComponent";
 import PrivateRoute from "./routes/PrivateRoute";
 import { AuthContext, GetLoggedinUser } from "./contexts/AuthContext";
 import { MyRouter } from "./routes/MyRouter";
+import { ShowDocumentListContext } from "./contexts/ShowDocumentsListContext";
 
 const App: React.FC = () => {
-   
-  return (
-    <>
-      <BrowserRouter>
-        <DocumentTypeContext>
-          <FilterContext>
-            <SelectedFilterContext>
-              <AuthContext>
-                <NavbarComponent />
-                    <MyRouter />
-              </AuthContext>
-            </SelectedFilterContext>
-          </FilterContext>
-        </DocumentTypeContext>
-      </BrowserRouter>
-    </>
-  );
+
+    return (
+        <>
+            <BrowserRouter>
+                <DocumentTypeContext>
+                    <FilterContext>
+                        <SelectedFilterContext>
+                            <ShowDocumentListContext>
+                                <AuthContext>
+                                    <NavbarComponent />
+                                    <MyRouter />
+                                </AuthContext>
+                            </ShowDocumentListContext>
+                        </SelectedFilterContext>
+                    </FilterContext>
+                </DocumentTypeContext>
+            </BrowserRouter>
+        </>
+    );
 };
 
 export default App;

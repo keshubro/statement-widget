@@ -2,6 +2,7 @@ import React from "react";
 import { SetDocumentType } from "../contexts/DocumentTypeContext";
 import { SetFilter } from "../contexts/FilterContext";
 import { SetSelectedFilter } from "../contexts/SelectedFilterContext";
+import { SetShowDocumentsListValue } from "../contexts/ShowDocumentsListContext";
 import { DocumentObject } from "../interfaces/AccountObjectInterface";
 
 const DocumentSelectComponent: React.FC<{
@@ -10,6 +11,7 @@ const DocumentSelectComponent: React.FC<{
   const setDocType = SetDocumentType();
   const handleFilterChange = SetFilter();
   const setSelectedFilter = SetSelectedFilter();
+  const setShowDocumentsListValue = SetShowDocumentsListValue();
 
   const _handleDocTypeChange = (e: any) => {
     setDocType(e?.target?.value);
@@ -23,6 +25,7 @@ const DocumentSelectComponent: React.FC<{
       defaultSelectedFilter = "DATE_RANGE";
     }
     setSelectedFilter(defaultSelectedFilter);
+    setShowDocumentsListValue(false);
   };
 
   return (

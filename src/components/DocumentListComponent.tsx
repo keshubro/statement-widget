@@ -8,7 +8,6 @@ export const DocumentListComponent: React.FC<{ documentList: ExpandableItemProps
         <div>
             {
                 documentList.map((doc) => {
-                    debugger
                     return <div className="mb-1"><ExpandableItem title={doc.title} details={doc.details} filename={doc.filename} displayDownloadButton/></div>
                 })
             }

@@ -1,13 +1,16 @@
 import React from "react";
 import { GetFilter } from "../contexts/FilterContext";
 import { GetSelectedFilter, SetSelectedFilter } from "../contexts/SelectedFilterContext";
+import { SetShowDocumentsListValue } from "../contexts/ShowDocumentsListContext";
 
 const FilterComponent: React.FC = () => {
     const filterSelected = GetSelectedFilter();
     const setFilterSelected = SetSelectedFilter();
+    const setShowDocumentsListValue = SetShowDocumentsListValue();
 
     const _handleFilterChange = (e: any) => {
         setFilterSelected(e?.target?.value);
+        setShowDocumentsListValue(false);
     };
 
     const filterArray = GetFilter();
